@@ -1,0 +1,16 @@
+{
+    "name": "ngda",
+    "version": "0.1",
+    "dependencies": {
+            "bulma": null,
+        "jquery": null
+    },
+    "main": "assets/js/main.js",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ]
+}
