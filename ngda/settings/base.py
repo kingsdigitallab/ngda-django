@@ -13,10 +13,7 @@ import logging
 import os
 
 
-
 from kdl_ldap.settings import * # noqa
-
-
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -86,7 +83,6 @@ INSTALLED_APPS = [
 ]
 
 INSTALLED_APPS += [    # your project apps here
-    
     'django.contrib.gis',
     'kdl_ldap',
     'rest_framework',
@@ -107,6 +103,7 @@ INSTALLED_APPS += [    # your project apps here
     'modelcluster',
     'wagtail.wagtailsearch',
     'haystack',
+    'archives',
 ]
 
 INTERNAL_IPS = ['127.0.0.1']
@@ -181,9 +178,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    
-
-
     'wagtail.wagtailcore.middleware.SiteMiddleware',
     'wagtail.wagtailredirects.middleware.RedirectMiddleware',
 
@@ -208,7 +202,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.template.context_processors.static',
                 'django.contrib.messages.context_processors.messages',
-                
+
 
 
 
@@ -313,6 +307,7 @@ db_engine = 'django.db.backends.postgresql_psycopg2'
 if 'django.contrib.gis' in INSTALLED_APPS:
     db_engine = 'django.contrib.gis.db.backends.postgis'
 
+POSTGIS_VERSION = (1, 5, 0)
 
 
 AUTH_LDAP_REQUIRE_GROUP = 'cn=ngda,' + LDAP_BASE_OU
@@ -330,7 +325,8 @@ WAGTAILSEARCH_BACKENDS = {
 # Change as required
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'ENGINE':
+        'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
         'URL': 'http://127.0.0.1:9200/',
         'INDEX_NAME': 'ngda_haystack',
     },

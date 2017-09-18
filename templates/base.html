@@ -10,21 +10,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   {% compress css %}
-  <link rel="stylesheet" type="text/x-scss" href="{% static 'scss/main.scss' %}">
+
+  <!-- <link rel="stylesheet" type="text/x-scss" href="{% static 'scss/main.scss' %}"> -->
+
+  <link rel="stylesheet" type="text/x-scss" href="{% static 'bulma/bulma.css' %}">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
   {% endcompress %}
 </head>
 <body>
   <header>
-    {% include 'includes/header.html' %}
+  <section class="section">
+    <div class="container">
+      <h1 class="title">
+        National Gallery Dealer's Archives
+      </h1>
+      <p class="subtitle">
+        <strong>Prototype developed by KDL with the National Gallery</strong>
+      </p>
+    </div>
+  </section>   
   </header>
 
   <nav>
-    {% include 'includes/navigation.html' %}
+    {# include 'includes/navigation.html' #}
   </nav>
 
   <main>
-    {% block title %}{% endblock %}
     {% block main %}
+
+
     {% endblock %}
   </main>
 
