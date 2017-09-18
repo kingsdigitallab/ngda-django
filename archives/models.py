@@ -109,6 +109,7 @@ class Person(models.Model):
                                  blank=True, null=True)
     dob = models.IntegerField(null=True, blank=True)
     dod = models.IntegerField(null=True, blank=True)
+    ulan_id = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return '%s, %s' % (self.family_name, self.first_name)
