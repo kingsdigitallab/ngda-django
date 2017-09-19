@@ -10,8 +10,8 @@ INTERNAL_IPS = INTERNAL_IPS + ['']
 DATABASES = {
     'default': {
         'ENGINE': db_engine,
-        'NAME': 'app_ngda_dev',
-        'USER': 'app_ngda',
+        'NAME': '',
+        'USER': '',
         'PASSWORD': '',
         'HOST': ''
     },

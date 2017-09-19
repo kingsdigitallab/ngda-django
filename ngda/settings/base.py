@@ -101,7 +101,7 @@ INSTALLED_APPS += [    # your project apps here
     'wagtail.contrib.table_block',
     'taggit',
     'modelcluster',
-    'wagtail.wagtailsearch',
+    # 'wagtail.wagtailsearch',
     'haystack',
     'archives',
 ]
@@ -322,6 +322,7 @@ WAGTAILSEARCH_BACKENDS = {
         'TIMEOUT': 5,
     }
 }
+
 # Change as required
 HAYSTACK_CONNECTIONS = {
     'default': {
