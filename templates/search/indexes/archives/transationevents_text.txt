@@ -1,2 +1,4 @@
 {{ object.stock_number }}
 {{ object.body }}
+{{ object.artist }}
+{{ object.work.genre.name }}

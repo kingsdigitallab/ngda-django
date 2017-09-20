@@ -30,7 +30,7 @@ PROJECT_TITLE = 'National Gallery Dealer Archives'
 ADMINS = ()
 MANAGERS = ADMINS
 
-ALLOWED_HOSTS = ['ngda-dev.kdl.kcl.ac.uk', '127.0.0.1', ]
+ALLOWED_HOSTS = ['ngda-dev.kdl.kcl.ac.uk', '127.0.0.1', '137.73.123.139']
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#caches
 # https://docs.djangoproject.com/en/dev/topics/cache/

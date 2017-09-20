@@ -3,6 +3,17 @@ from django.contrib.gis.db import models
 # Create your models here.
 
 
+class PageImage(models.Model):
+    source = models.ForeignKey('SourceMaterial')
+    page_number = models.IntegerField(null=True, blank=True)
+    image = models.ImageField(upload_to="page_images/")
+
+    def __str__(self):
+        return '%s, Page %s' % (self.source.title, self.page_number)
+
+    class Meta:
+        ordering = ['source__title', 'page_number']
+
 class SourceMaterial(models.Model):
     title = models.CharField(max_length=100, blank=True)
     description = models.TextField(blank=True)
@@ -24,6 +35,7 @@ class SourceMaterial(models.Model):
 class TransationEvents(models.Model):
     source = models.ForeignKey(SourceMaterial)
     stock_number = models.IntegerField()
+    page_image = models.ForeignKey('PageImage', null=True, blank=True)
     purchase_date = models.DateField(null=True,
                                      blank=True)
     artist = models.ForeignKey('Person',
