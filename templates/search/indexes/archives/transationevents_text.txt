@@ -2,3 +2,7 @@
 {{ object.body }}
 {{ object.artist }}
 {{ object.work.genre.name }}
+{{ object.stock_number }}
+{{ object.buyer.family_name }}
+{{ object.seller.family_name }}
+{{ object.work.title }}

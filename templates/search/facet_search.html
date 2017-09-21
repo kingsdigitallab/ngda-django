@@ -45,25 +45,32 @@
             {% endif %}
         </dl>
     </div>
+
+
+
     <!-- End faceting -->
+     </div>
+</section>
+
+<section class="section">
+    <div class="container">
+       <div class="box">
 
 
-    {% for facets in page_object %}
-         {{ facets. }}
-    {% endfor %}
+    <h1>Results</h1>
+
+    <p>... for {{ query }}</p>
 
     <!-- Display results... -->
     {% for result in page_object %}
         <div class="search_result">
-            <h3><a href="{{ result.object.get_absolute_url }}">{{ result.object.title }}</a></h3>
-
-            <p>{{ result.object.body|truncatewords:80 }}</p>
+            <h3><a href="#">{{ result.object.id }}, {{ result.object.source.catalogue_ref }}</a></h3>
         </div>
     {% empty %}
         <p>Sorry, no results found.</p>
     {% endfor %}
 {% endif %}
-
+        </div>
      </div>
 </section>
 {% endblock %}
