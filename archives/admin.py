@@ -15,7 +15,7 @@ class SourceMaterialAdmin(admin.OSMGeoAdmin):
 
 
 class TransactionAdmin(admin.OSMGeoAdmin):
-    list_display = ('__str__', 'source')
+    list_display = ('__str__', 'source', 'work')
 
 
 class PersonAdmin(admin.OSMGeoAdmin):

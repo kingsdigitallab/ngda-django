@@ -6,3 +6,4 @@
 {{ object.buyer.family_name }}
 {{ object.seller.family_name }}
 {{ object.work.title }}
+{{ object.work }}

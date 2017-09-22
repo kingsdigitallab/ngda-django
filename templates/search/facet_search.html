@@ -34,6 +34,27 @@
                 <p>No artist facets.</p>
             {% endif %}
 
+            {% if facets.fields.buyer %}
+                <dt>Buyer</dt>
+                {# Provide only the top 5 genres #}
+                {% for buyer in facets.fields.buyer|slice:":5" %}
+                    <dd><a href="{{ request.get_full_path }}&amp;selected_facets=buyer_exact:{{ buyer.0|urlencode }}">{{ buyer.0 }}</a> ({{ buyer.1 }})</dd>
+                {% endfor %}
+            {% else %}
+                <p>No buyer facets.</p>
+            {% endif %}
+
+            {% if facets.fields.seller %}
+                <dt>Seller</dt>
+                {# Provide only the top 5 genres #}
+                {% for seller in facets.fields.seller|slice:":5" %}
+                    <dd><a href="{{ request.get_full_path }}&amp;selected_facets=seller_exact:{{ seller.0|urlencode }}">{{ seller.0 }}</a> ({{ seller.1 }})</dd>
+                {% endfor %}
+            {% else %}
+                <p>No seller facets.</p>
+            {% endif %}
+
+
             {% if facets.fields.genre %}
                 <dt>Genre</dt>
                 {# Provide only the top 5 genres #}
