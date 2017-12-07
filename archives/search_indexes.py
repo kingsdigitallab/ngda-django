@@ -4,7 +4,7 @@ from archives.models import TransationEvents
 
 class TransactionEventIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
-    artist = indexes.CharField(model_attr="artist", faceted=True)
+    artist = indexes.CharField(model_attr="artist", faceted=True, null=True)
     genre = indexes.CharField(model_attr="work", faceted=True)
     stock_number = indexes.CharField(model_attr="stock_number")
     work = indexes.CharField(model_attr="work")
@@ -13,7 +13,7 @@ class TransactionEventIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_buyer(self, obj):
         if obj.buyer:
-            return '%s' % (obj.buyer.family_name)        
+            return '%s' % (obj.buyer.family_name)
         else:
             return "Unidentified"
 
@@ -30,7 +30,10 @@ class TransactionEventIndex(indexes.SearchIndex, indexes.Indexable):
         return str(obj.stock_number)
 
     def prepare_artist(self, obj):
-        return '%s, %s' % (obj.artist.family_name, obj.artist.first_name)
+        if obj.artist:
+            return '%s, %s' % (obj.artist.family_name, obj.artist.first_name)
+        else:
+            return 'Not specified'
 
     def prepare_genre(self, obj):
         if obj.work.genre:

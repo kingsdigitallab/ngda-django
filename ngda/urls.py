@@ -4,26 +4,30 @@ from django.contrib import admin
 # from wagtail.wagtailadmin import urls as wagtailadmin_urls
 # from wagtail.wagtailcore import urls as wagtail_urls
 # from wagtail.wagtaildocs import urls as wagtaildocs_urls
-# from wagtail.wagtailsearch.urls import frontend as wagtailsearch_frontend_urls
+# from wagtail.wagtailsearch.urls import frontend as
+# wagtailsearch_frontend_urls
+
 from archives import urls as archive_urls
 
-## For overriding haystack search:
+from kdl_ldap.signal_handlers import \
+    register_signal_handlers as kdl_ldap_register_signal_hadlers
+
+
+# For overriding haystack search:
 from haystack.forms import FacetedSearchForm
-## from haystack.views import FacetedSearchView
+# from haystack.views import FacetedSearchView
 
 
 from haystack.generic_views import FacetedSearchView as BaseFacetedSearchView
 
+
 # Now create your own that subclasses the base view
 class FacetedSearchView(BaseFacetedSearchView):
     form_class = FacetedSearchForm
-    facet_fields = ['genre', 'artist']
+    facet_fields = ['genre', 'artist', 'buyer', 'seller']
     template_name = 'search/facet_search.html'
     context_object_name = 'page_object'
-    order_by = ['stock_number'] 
-
-from kdl_ldap.signal_handlers import \
-    register_signal_handlers as kdl_ldap_register_signal_hadlers
+    order_by = ['stock_number']
 
 
 kdl_ldap_register_signal_hadlers()
@@ -38,7 +42,7 @@ urlpatterns = [
     # url(r'^documents/', include(wagtaildocs_urls)),
     # url(r'^search/', include(wagtailsearch_frontend_urls)),
     url(r'^search/', include('haystack.urls')),
-    url(r'^facet/',  FacetedSearchView.as_view(), name='haystack_search'),
+    url(r'^facet/', FacetedSearchView.as_view(), name='haystack_search'),
     # url(r'', include(wagtail_urls)),
     url(r'', include(archive_urls)),
 ]

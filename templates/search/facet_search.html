@@ -28,7 +28,7 @@
                 <dt>Artist</dt>
                 {# Provide only the top 5 authors #}
                 {% for artist in facets.fields.artist|slice:":5" %}
-                    <dd><a href="{{ request.get_full_path }}&amp;selected_facets=artist_exact:{{ artist.0|urlencode }}">{{ artist.0 }}</a> ({{ artist.1 }})</dd>
+                    <dd><a class="button is-primary is-rounded" href="{{ request.get_full_path }}&amp;selected_facets=artist_exact:{{ artist.0|urlencode }}">{{ artist.0 }}</a> ({{ artist.1 }})</dd>
                 {% endfor %}
             {% else %}
                 <p>No artist facets.</p>
@@ -38,7 +38,7 @@
                 <dt>Buyer</dt>
                 {# Provide only the top 5 genres #}
                 {% for buyer in facets.fields.buyer|slice:":5" %}
-                    <dd><a href="{{ request.get_full_path }}&amp;selected_facets=buyer_exact:{{ buyer.0|urlencode }}">{{ buyer.0 }}</a> ({{ buyer.1 }})</dd>
+                    <dd><a class="button is-primary is-rounded" href="{{ request.get_full_path }}&amp;selected_facets=buyer_exact:{{ buyer.0|urlencode }}">{{ buyer.0 }}</a> ({{ buyer.1 }})</dd>
                 {% endfor %}
             {% else %}
                 <p>No buyer facets.</p>
@@ -48,7 +48,7 @@
                 <dt>Seller</dt>
                 {# Provide only the top 5 genres #}
                 {% for seller in facets.fields.seller|slice:":5" %}
-                    <dd><a href="{{ request.get_full_path }}&amp;selected_facets=seller_exact:{{ seller.0|urlencode }}">{{ seller.0 }}</a> ({{ seller.1 }})</dd>
+                    <dd><a class="button is-primary is-rounded" href="{{ request.get_full_path }}&amp;selected_facets=seller_exact:{{ seller.0|urlencode }}">{{ seller.0 }}</a> ({{ seller.1 }})</dd>
                 {% endfor %}
             {% else %}
                 <p>No seller facets.</p>
@@ -59,7 +59,7 @@
                 <dt>Genre</dt>
                 {# Provide only the top 5 genres #}
                 {% for genre in facets.fields.genre|slice:":5" %}
-                    <dd><a href="{{ request.get_full_path }}&amp;selected_facets=genre_exact:{{ genre.0|urlencode }}">{{ genre.0 }}</a> ({{ genre.1 }})</dd>
+                    <dd><a class="button is-primary is-rounded" href="{{ request.get_full_path }}&amp;selected_facets=genre_exact:{{ genre.0|urlencode }}">{{ genre.0 }}</a> ({{ genre.1 }})</dd>
                 {% endfor %}
             {% else %}
                 <p>No genre facets.</p>
@@ -80,16 +80,28 @@
 
     <h1>Results</h1>
 
-    <p>... for {{ query }}</p>
+    <p>... for search term "{{ query }}"</p>
 
     <!-- Display results... -->
+    <table class="table is-bordered is-striped">
+	<thead>
+        <tr><th>ID</th><th>Cat Ref</th><th>Artist</th><th>Work</th></tr>
+	</thead>
+	<tbody>
     {% for result in page_object %}
+	<tr>
+		<td><a href="/full-record/{{ result.object.id }}">{{ result.object.id }}</a></td><td>{{ result.object.source.catalogue_ref }}</td><td>{{ result.object.work.artist }}</td><td>{{ result.object.work }}</td>
+	</tr>
+	<!--
         <div class="search_result">
             <h3><a href="#">{{ result.object.id }}, {{ result.object.source.catalogue_ref }}</a></h3>
         </div>
+	-->
     {% empty %}
         <p>Sorry, no results found.</p>
     {% endfor %}
+	</tbody>
+     </table>
 {% endif %}
         </div>
      </div>
