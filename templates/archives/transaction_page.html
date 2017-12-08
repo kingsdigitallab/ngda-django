@@ -5,9 +5,73 @@
 <section class="section">
     <div class="container">
 
-{{ transaction }}
+      <div id="image" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+          <!-- Any other Bulma elements you want -->
+          <image src="{{ transaction.page_image.image.url }}"></image>
+        </div>
+        <button onclick="closeModal()" class="modal-close is-large" aria-label="close"></button>
+      </div>
+
+
+    <div class="columns">
+        <div class="column is-one-quarter">
+          <h1 class="title">Transaction details</h1>
+          <table class="table is striped is-bordered">
+            <tr><th>Source volume</th><td><a onclick="openModal() " href="#" return="null" >{{ transaction.source }}, Ln.{{ transaction.entry_line }}, Pg. {{ transaction.entry_page }}</a></td></tr>
+            <tr><th>Stock number</th><td>{{ transaction.stock_number }}</td></tr>
+            <tr><th>Purchase date</th><td>{{ transaction.purchase_date }}</td></tr>
+            <tr><th>Purchased from</th><td>{{ transaction.seller }}</td></tr>
+            <tr><th>Purchase price</th><td>£{{ transaction.purchase_pounds }}</td></tr>
+            <tr><th>Sold date</th><td>{{ transaction.sold_date }}</td></tr>
+            <tr><th>Sold to</th><td>{{ transaction.buyer }}</td></tr>
+            <tr><th>Sale price</th><td>£{{ transaction.sold_pounds }}</td></tr>
+            <tr><th>Firm owner</th><td>{{ transaction.firm_owner }}</td></tr>
+
+
+          </table>
+        </div>
+
+        <div class="column is-one-quarters">
+          <h1 class="title">Work detail</h1>
+          <table class="table is striped is-bordered">
+            <tr><th>Artist</th><td>{{ transaction.artist }}</td></tr>
+            <tr><th>Artist ULAN</th><td><a href="http://www.getty.edu/vow/ULANFullDisplay?find=&role=&nation=&subjectid={{ transaction.artist.ulan_id }}" target="_blank">{{ transaction.artist.ulan_id }} (external link)</a></td></tr>
+            <tr><th>Work</th><td>{{ transaction.work }}</td></tr>
+            <tr><th>Genre</th><td>{{ transaction.work.genre }}</td></tr>
+          </table>
+        </div>
+
+        <div class="column is-two-quarters">
+          <h1 class="title">
+            Associated locations
+          </h1>
+          <table class="table is-striped is-bordered">
+            {% if transaction.artist.location %}
+            <tr><th>Artist</th><td>{{ transaction.artist.location.point.x }}, {{ transaction.artist.location.point.y }}</td></tr>
+            {% endif %}
+          </table>
+          <div id="map" style="height:400px;background-color:black;">
+          </div>
+        </div>
+    </div>
 
     </div>
 </section>
-{% endblock %}
 
+
+<script>
+
+function openModal(){
+
+  $("#image").addClass("is-active");
+}
+
+function closeModal(){
+
+  $("#image").removeClass("is-active");
+}
+
+</script>
+{% endblock %}
