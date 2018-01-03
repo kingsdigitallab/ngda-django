@@ -27,7 +27,7 @@ class FacetedSearchView(BaseFacetedSearchView):
     facet_fields = ['genre', 'artist', 'buyer', 'seller']
     template_name = 'search/facet_search.html'
     context_object_name = 'page_object'
-    order_by = ['stock_number']
+    sort = ['stock_number']
 
 
 kdl_ldap_register_signal_hadlers()

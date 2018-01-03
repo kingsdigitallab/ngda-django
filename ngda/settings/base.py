@@ -332,3 +332,6 @@ HAYSTACK_CONNECTIONS = {
         'INDEX_NAME': 'ngda_haystack',
     },
 }
+
+
+HAYSTACK_SEARCH_RESULTS_PER_PAGE = 500
