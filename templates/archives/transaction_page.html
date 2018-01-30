@@ -63,8 +63,17 @@
           </h1>
           <table class="table is-striped is-bordered">
             {% if transaction.artist.location %}
-            <tr><th>Artist</th><td>{{ transaction.artist.location.point.x }}, {{ transaction.artist.location.point.y }}</td><td>{{ transaction.artist.location.description }}</td></tr>
+            <tr><th>Artist <img src="/static/js/images/marker-icon.png"/></th><td>{{ transaction.artist.location.description }}, {{ transaction.artist.location.display_name }}</td></tr>
             {% endif %}
+            {% if transaction.owner.location %}
+            <tr><th>Owner <img src="/static/js/images/marker-icon.png"/></th><td>{{ transaction.owner.location.description }}, {{ transaction.owner.location.display_name }}</td></tr>
+            {% endif %}
+{% if transaction.buyer.location %}
+<tr><th>Buyer <img src="/static/js/images/marker-icon.png"/></th><td>{{ transaction.buyer.location.description }}, {{ transaction.buyer.location.display_name }}</td></tr>
+{% endif %}
+{% if transaction.seller.location %}
+<tr><th>Seller <img src="/static/js/images/marker-icon.png"/></th><td>{{ transaction.seller.location.description }}, {{ transaction.seller.location.display_name }}</td></tr>
+{% endif %}
           </table>
           <div id="map" style="height:400px;background-color:black;">
           </div>
@@ -100,22 +109,40 @@ function closeModal(){
 
 <script>
 
+
+var point;
+var mymap;
+
 $(document).ready(function() {
 
-var mymap = L.map('map').setView([{{ transaction.artist.location.point.y }}, {{ transaction.artist.location.point.x }}], 13);
 
-/*
-NLS = L.tileLayer( 'http://nls-{s}.tileserver.com/nls/{z}/{x}/{y}.jpg', {
-            attribution: 'Historical Maps Layer, 1919-1947 from the <a href="http://maps.nls.uk/projects/api/">NLS Maps API</a>',opacity: 0.85, subdomains: '0123'
-          }).addTo(mymap)
-*/
+try {
+
+mymap = L.map('map')
 
 OpenStreetMap_Mapnik = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
+        maxZoom: 6,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(mymap);
 
-var point = L.marker([ {{ transaction.artist.location.point.y }}, {{ transaction.artist.location.point.x }} ]).addTo(mymap);
+artist_point  = new L.geoJson({{ transaction.artist.location.point.geojson|safe }} ).addTo(mymap)
+// var point = L.marker([ {{ transaction.artist.location.point.y }}, {{ transaction.artist.location.point.x }} ]).addTo(mymap);
+owner_point =  new L.geoJson({{ transaction.owner.location.point.geojson|safe }}).addTo(mymap)
+buyer_point = new L.geoJson({{ transaction.buyer.location.point.geojson|safe }}).addTo(mymap)
+seller_point = new L.geoJson({{ transaction.seller.location.point.geojson|safe }}).addTo(mymap)
+
+
+
+mymap.setView([51,0],10);
+
+mymap.fitBounds(artist_point.getBounds());
+
+
+}
+catch (err) {
+   // ah well
+}
+
 
 
 var book = L.map('book', {
@@ -125,7 +152,7 @@ var book = L.map('book', {
 });
 
 
-L.tileLayer.iiif('http://loris.cch.kcl.ac.uk/ngda/webroot/images/jp2/{{ transaction.page_image.image }}/info.json',
+L.tileLayer.iiif('https://loris.cch.kcl.ac.uk/ngda/webroot/images/jp2/{{ transaction.page_image.image }}/info.json',
         {maxZoom:10,
          tileSize:512}
 ).addTo(book);
@@ -139,7 +166,7 @@ var art = L.map('art', {
 });
 
 
-L.tileLayer.iiif('http://loris.cch.kcl.ac.uk/ngda/webroot/images/jp2/N-1420-00-000025-wpu.jpg/info.json',
+L.tileLayer.iiif('https://loris.cch.kcl.ac.uk/ngda/webroot/images/jp2/N-1420-00-000025-wpu.jpg/info.json',
 	{maxZoom:10,
          tileSize:512}
 ).addTo(art);
