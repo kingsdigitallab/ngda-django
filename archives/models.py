@@ -3,6 +3,14 @@ from django.contrib.gis.db import models
 # Create your models here.
 
 
+class WorkImage(models.Model):
+    description = models.IntegerField(null=True, blank=True)
+    image = models.ImageField(upload_to="")
+
+    def __str__(self):
+        return '%s, Page %s' % (self.work.title)
+
+
 class PageImage(models.Model):
     source = models.ForeignKey('SourceMaterial')
     page_number = models.IntegerField(null=True, blank=True)
@@ -13,6 +21,7 @@ class PageImage(models.Model):
 
     class Meta:
         ordering = ['source__title', 'page_number']
+
 
 class SourceMaterial(models.Model):
     title = models.CharField(max_length=100, blank=True)
@@ -141,6 +150,7 @@ class Work(models.Model):
     title = models.TextField()
     genre = models.ForeignKey('Genre', null=True, blank=True)
     description = models.TextField(null=True, blank=True)
+    image = models.ForeignKey('WorkImage', null=True, blank=True)
     artist = models.ForeignKey('Person', null=True,
                                blank=True)
     shape = models.ForeignKey('Shape', null=True,

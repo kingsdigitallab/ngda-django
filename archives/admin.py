@@ -3,7 +3,7 @@ from django.contrib.gis import admin
 
 from archives.models import SourceMaterial, TransationEvents,\
     Person, Title, Work, Support, Shape, Location, Genre,\
-    Dealership, PageImage
+    Dealership, PageImage, WorkImage
 
 
 class LocationAdmin(admin.OSMGeoAdmin):
@@ -35,3 +35,4 @@ admin.site.register(Support)
 admin.site.register(Shape)
 admin.site.register(Location, LocationAdmin)
 admin.site.register(Dealership)
+admin.site.register(WorkImage)
