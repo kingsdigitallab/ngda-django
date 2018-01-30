@@ -19,6 +19,7 @@
         <div class="column is-one-quarter">
           <h1 class="title">Transaction details</h1>
           <table class="table is striped is-bordered">
+            <tr><td colspan="2">{{ transaction.notes }}</td></tr>
             <tr><th>Source volume</th><td><a onclick="openModal() " href="#" return="null" >{{ transaction.source }}, Ln.{{ transaction.entry_line }}, Pg. {{ transaction.entry_page }}</a></td></tr>
             <tr><th>Stock number</th><td>{{ transaction.stock_number }}</td></tr>
             <tr><th>Purchase date</th><td>{{ transaction.purchase_date }}</td></tr>
@@ -49,7 +50,7 @@
           </h1>
           <table class="table is-striped is-bordered">
             {% if transaction.artist.location %}
-            <tr><th>Artist</th><td>{{ transaction.artist.location.point.x }}, {{ transaction.artist.location.point.y }}</td></tr>
+            <tr><th>Artist</th><td>{{ transaction.artist.location.point.x }}, {{ transaction.artist.location.point.y }}</td><td>{{ transaction.artist.location.description }}</td></tr>
             {% endif %}
           </table>
           <div id="map" style="height:400px;background-color:black;">
@@ -73,5 +74,39 @@ function closeModal(){
   $("#image").removeClass("is-active");
 }
 
+
+
+
 </script>
+{% endblock %}
+
+
+
+{% block footer_scripts %}              
+
+
+<script>
+
+$(document).ready(function() {
+
+var mymap = L.map('map').setView([{{ transaction.artist.location.point.y }}, {{ transaction.artist.location.point.x }}], 13);
+
+NLS = L.tileLayer( 'http://nls-{s}.tileserver.com/nls/{z}/{x}/{y}.jpg', {
+            attribution: 'Historical Maps Layer, 1919-1947 from the <a href="http://maps.nls.uk/projects/api/">NLS Maps API</a>',opacity: 0.85, subdomains: '0123'
+          }).addTo(mymap)
+
+/*
+OpenStreetMap_Mapnik = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(mymap);
+*/
+var point = L.marker([ {{ transaction.artist.location.point.y }}, {{ transaction.artist.location.point.x }} ]).addTo(mymap);
+
+
+
+});
+
+</script>
+
 {% endblock %}
