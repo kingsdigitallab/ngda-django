@@ -32,7 +32,7 @@
             {% if facets.fields.artist %}
                 <dt>Artist</dt>
                 {# Provide only the top 5 authors #}
-                {% for artist in facets.fields.artist|slice:":100" %}
+                {% for artist in facets.fields.artist|slice:":10" %}
                     <dd style="padding-bottom:2px;"><a class="button is-primary is-rounded" href="{{ request.get_full_path }}&amp;selected_facets=artist_exact:{{ artist.0|urlencode }}">{{ artist.0 }}</a> ({{ artist.1 }})</dd>
                 {% endfor %}
             {% else %}
@@ -45,7 +45,7 @@
             {% if facets.fields.buyer %}
                 <dt>Buyer</dt>
                 {# Provide only the top 5 genres #}
-                {% for buyer in facets.fields.buyer|slice:":100" %}
+                {% for buyer in facets.fields.buyer|slice:":10" %}
                     <dd style="padding-bottom:2px;"><a class="button is-primary is-rounded" href="{{ request.get_full_path }}&amp;selected_facets=buyer_exact:{{ buyer.0|urlencode }}">{{ buyer.0 }}</a> ({{ buyer.1 }})</dd>
                 {% endfor %}
             {% else %}
@@ -57,7 +57,7 @@
         <dl>            {% if facets.fields.seller %}
                 <dt>Seller</dt>
                 {# Provide only the top 5 genres #}
-                {% for seller in facets.fields.seller|slice:":100" %}
+                {% for seller in facets.fields.seller|slice:":10" %}
                     <dd style="padding-bottom:2px;"> <a class="button is-primary is-rounded" href="{{ request.get_full_path }}&amp;selected_facets=seller_exact:{{ seller.0|urlencode }}">{{ seller.0 }}</a> ({{ seller.1 }})</dd>
                 {% endfor %}
             {% else %}
@@ -70,7 +70,7 @@
             {% if facets.fields.genre %}
                 <dt>Genre</dt>
                 {# Provide only the top 5 genres #}
-                {% for genre in facets.fields.genre|slice:":100" %}
+                {% for genre in facets.fields.genre|slice:":10" %}
                     <dd style="padding-bottom:2px;"><a class="button is-primary is-rounded" href="{{ request.get_full_path }}&amp;selected_facets=genre_exact:{{ genre.0|urlencode }}">{{ genre.0 }}</a> ({{ genre.1 }})</dd>
                 {% endfor %}
             {% else %}
@@ -88,9 +88,9 @@
 
 <section class="section">
     <div class="container">
-       <div class="box">
 
-
+	<div class="columns">
+	<div class="box column is-two-thirds">
     <h1>Results</h1>
 
     <p>... for search term "{{ query }}"</p>
@@ -103,24 +103,60 @@
 	<tbody>
     {% for result in page_object %}
 	<tr>
-		<td><a href="/full-record/{{ result.object.id }}">{{ result.object.id }}</a></td><td>{{ result.object.source.catalogue_ref }}</td><td>{{ result.object.work.artist }}</td><td>{{ result.object.work }}</td>
+		<td><a href="/full-record/{{ result.object.id }}">{{ result.object.id }}</a></td><td>{{ result.object.source.catalogue_ref }}</td><td>{{ result.object.work.artist }}</td><td>{{ result.object.work.title }}</td>
                 <td>{{ result.object.purchase_date }}</td><td>{{ result.object.sold_date}}</td>  
 
 	</tr>
-	<!--
-        <div class="search_result">
-            <h3><a href="#">{{ result.object.id }}, {{ result.object.source.catalogue_ref }}</a></h3>
-        </div>
-	-->
     {% empty %}
         <p>Sorry, no results found.</p>
     {% endfor %}
 	</tbody>
      </table>
 {% endif %}
-        </div>
-     </div>
+ 	</div>
+
+		<div class="column is-one-third">     
+                   <div class="box" id="result-map" style="background:white;height:600px;">
+		   </div>
+       		 </div>
+	</div> <!-- end columns -->
+     </div> <!-- end container -->
 
 
 </section>
+
+{% endblock %}
+
+
+  {% block footer_scripts %}
+
+
+<script>
+
+$(document).ready( function(){
+resultMap = L.map("result-map")
+OpenStreetMap_Mapnik = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 6,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(resultMap);    
+
+resultMap.setView([54,-1.5],10)
+
+points = []
+
+{% for result in page_object %}
+
+point{{ forloop.counter}} = L.geoJson({{ result.object.artist.location.point.geojson|safe }}).addTo(resultMap);
+
+{% endfor %}
+
+
+})
+
+
+
+
+
+</script>
+
 {% endblock %}

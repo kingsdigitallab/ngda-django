@@ -41,10 +41,18 @@ class SourceMaterial(models.Model):
         ordering = ['catalogue_ref', ]
 
 
+class Commission(models.Model):
+    description = models.CharField(max_length=30)
+
+    def __str__(self):
+        return '%s' % self.description
+
+
 class TransationEvents(models.Model):
     source = models.ForeignKey(SourceMaterial)
     stock_number = models.IntegerField()
     page_image = models.ForeignKey('PageImage', null=True, blank=True)
+    commission = models.ForeignKey('Commission', null=True, blank=True)
     purchase_date = models.DateField(null=True,
                                      blank=True)
     artist = models.ForeignKey('Person',
@@ -116,6 +124,16 @@ class Dealership(models.Model):
     def __str__(self):
         return '%s' % self.description
 
+class Nationality(models.Model):
+    description = models.CharField(max_length=50)
+
+
+    def __str__(self):
+        return '%s' % self.description
+
+    class Meta:
+        verbose_name_plural = 'Nationalities'
+
 
 class Person(models.Model):
     first_name = models.CharField(max_length=30,
@@ -124,13 +142,16 @@ class Person(models.Model):
     family_name = models.CharField(max_length=50)
     other_names = models.CharField(max_length=100,
                                    null=True, blank=True)
+    nationality = models.ForeignKey('Nationality', null=True, blank=True)
     title = models.ForeignKey('Title',
-                              null=True, blank=True)
+                              null=True, blank=True,
+                              verbose_name='Primary role')
     location = models.ForeignKey('Location',
                                  blank=True, null=True)
     dob = models.IntegerField(null=True, blank=True)
     dod = models.IntegerField(null=True, blank=True)
     ulan_id = models.IntegerField(null=True, blank=True)
+    viaf_id = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return '%s, %s' % (self.family_name, self.first_name)
@@ -149,6 +170,9 @@ class Title(models.Model):
 class Work(models.Model):
     title = models.TextField()
     genre = models.ForeignKey('Genre', null=True, blank=True)
+    subgenre = models.ForeignKey('SubGenre', null=True, blank=True)
+    school = models.ForeignKey('School', null=True, blank=True)
+    movement = models.ForeignKey('Movement', null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     image = models.ForeignKey('WorkImage', null=True, blank=True)
     artist = models.ForeignKey('Person', null=True,
@@ -159,6 +183,9 @@ class Work(models.Model):
                                 blank=True)
     subject_location = models.ForeignKey('Location', null=True,
                                          blank=True)
+    current_location = models.ForeignKey('CurrentLocation', null=True,
+                                         blank=True)
+    external_link = models.CharField(max_length=500, null=True, blank=True)
 
     def __str__(self):
         if self.artist:
@@ -171,12 +198,47 @@ class Work(models.Model):
         ordering = ('artist__family_name', 'title')
 
 
+class CurrentLocation(models.Model):
+    loc_type = models.ForeignKey('LocationType')
+    name = models.CharField(max_length=50)
+    location = models.ForeignKey('Location', null=True,
+                                 blank=True)
+    nationality = models.ForeignKey('Nationality', blank=True, null=True)
+
+    def __str__(self):
+        return '%s, %s' % (self.name, self.type.description)
+
+class LocationType(models.Model):
+     description = models.CharField(max_length=30)
+
+     def __str__(self):
+         return '%s' % self.description
+   
+
 class Genre(models.Model):
     name = models.CharField(max_length=50)
 
     def __str__(self):
         return '%s' % self.name
 
+class SubGenre(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return '%s' % self.name
+
+
+class School(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return '%s' % self.name
+
+class Movement(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return '%s' % self.name
 
 class Shape(models.Model):
     description = models.CharField(max_length=50)
@@ -198,6 +260,7 @@ class Location(models.Model):
     point = models.GeometryField(blank=True,
                                  null=True,
                                  srid=4326)
+    geonames_id = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return '%s' % self.display_name
