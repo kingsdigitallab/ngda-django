@@ -1,5 +1,5 @@
 
-{% extends 'base.html' %}
+({% extends 'base.html' %}
 
 {% block main %}
 <section class="section">
@@ -48,6 +48,7 @@
             <tr><th>Artist ULAN</th><td><a href="http://www.getty.edu/vow/ULANFullDisplay?find=&role=&nation=&subjectid={{ transaction.artist.ulan_id }}" target="_blank">{{ transaction.artist.ulan_id }} (external link)</a></td></tr>
             <tr><th>Work</th><td>{{ transaction.work }}</td></tr>
             <tr><th>Genre</th><td>{{ transaction.work.genre }}</td></tr>
+            <tr><th>External link</th><td><a href="{{ transaction.work.external_link }}" target="_blank">Gallery webpage</a></td></tr>
           </table>
 
 	  <div  id="art" style="height:400px;background-color:black;">
@@ -66,10 +67,10 @@
             <tr><th>Artist <img src="/static/js/images/marker-icon.png"/></th><td>{{ transaction.artist.location.description }}, {{ transaction.artist.location.display_name }}</td></tr>
             {% endif %}
             {% if transaction.owner.location %}
-            <tr><th>Owner <img src="/static/js/images/marker-icon.png"/></th><td>{{ transaction.owner.location.description }}, {{ transaction.owner.location.display_name }}</td></tr>
+            <tr><th>Owner <img src="/static/js/images/marker-icon-red.png"/></th><td>{{ transaction.owner.location.description }}, {{ transaction.owner.location.display_name }}</td></tr>
             {% endif %}
 {% if transaction.buyer.location %}
-<tr><th>Buyer <img src="/static/js/images/marker-icon.png"/></th><td>{{ transaction.buyer.location.description }}, {{ transaction.buyer.location.display_name }}</td></tr>
+<tr><th>Buyer <img src="/static/js/images/marker-icon-green.png"/></th><td>{{ transaction.buyer.location.description }}, {{ transaction.buyer.location.display_name }}</td></tr>
 {% endif %}
 {% if transaction.seller.location %}
 <tr><th>Seller <img src="/static/js/images/marker-icon.png"/></th><td>{{ transaction.seller.location.description }}, {{ transaction.seller.location.display_name }}</td></tr>
@@ -166,10 +167,13 @@ var art = L.map('art', {
 });
 
 
-L.tileLayer.iiif('https://loris.cch.kcl.ac.uk/ngda/webroot/images/jp2/N-1420-00-000025-wpu.jpg/info.json',
+//L.tileLayer.iiif('https://loris.cch.kcl.ac.uk/ngda/webroot/images/jp2/works/N-1420-00-000025-wpu.jpg/info.json',
+{% for image in transaction.work.workimage_set.all %}
+L.tileLayer.iiif('https://loris.cch.kcl.ac.uk/ngda/webroot/dev/django/ngda-django/static/media/{{ image.image.name }}/info.json',
 	{maxZoom:10,
          tileSize:512}
 ).addTo(art);
+{% endfor %}
 
 
 

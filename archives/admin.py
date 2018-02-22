@@ -14,13 +14,18 @@ class LocationAdmin(admin.OSMGeoAdmin):
 class SourceMaterialAdmin(admin.OSMGeoAdmin):
     list_display = ('__str__', 'title')
 
+class WorkImageInline(admin.StackedInline):
+    model = WorkImage
+
+class WorkAdmin(admin.OSMGeoAdmin):
+    inlines = (WorkImageInline,)    
 
 class TransactionAdmin(admin.OSMGeoAdmin):
     list_display = ('__str__', 'source', 'work')
 
-
 class PersonAdmin(admin.OSMGeoAdmin):
     list_display = ('__str__', 'dob', 'dod')
+
 
 # Register your models here.
 
@@ -31,7 +36,7 @@ admin.site.register(Genre)
 admin.site.register(PageImage)
 admin.site.register(Person)
 admin.site.register(Title)
-admin.site.register(Work)
+admin.site.register(Work, WorkAdmin)
 admin.site.register(Support)
 admin.site.register(Shape)
 admin.site.register(Location, LocationAdmin)

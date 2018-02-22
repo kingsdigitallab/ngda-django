@@ -25,7 +25,7 @@ def timeGraphRequest(request, gType, gQuery):
 
 
 def genreJson(q):
-    graph = {'data':{'x':'x', 'columns':[['x'],['date']]},\
+    graph = {'data':{'x':'x', 'columns':[['x'],['price']]},\
              'axis':{'x':{'type':'timeseries',\
              'tick':{'format':'%Y-%m-%d'},\
              }}\

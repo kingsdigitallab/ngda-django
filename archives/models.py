@@ -4,11 +4,13 @@ from django.contrib.gis.db import models
 
 
 class WorkImage(models.Model):
-    description = models.IntegerField(null=True, blank=True)
-    image = models.ImageField(upload_to="")
+    work = models.ForeignKey('Work')
+    description = models.CharField(max_length=50,
+                                   null=True, blank=True)
+    image = models.ImageField(upload_to="work_images/")
 
     def __str__(self):
-        return '%s, Page %s' % (self.work.title)
+        return '%s' % (self.work.title)
 
 
 class PageImage(models.Model):
@@ -174,7 +176,7 @@ class Work(models.Model):
     school = models.ForeignKey('School', null=True, blank=True)
     movement = models.ForeignKey('Movement', null=True, blank=True)
     description = models.TextField(null=True, blank=True)
-    image = models.ForeignKey('WorkImage', null=True, blank=True)
+    #image = models.ForeignKey('WorkImage', null=True, blank=True)
     artist = models.ForeignKey('Person', null=True,
                                blank=True)
     shape = models.ForeignKey('Shape', null=True,

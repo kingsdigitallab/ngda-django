@@ -21,6 +21,20 @@
 </form>
 
 
+
+   <div class="columns">
+    <div class="column">
+      <a style="margin-top:5px;" class="button is-warning is-rounded"
+      href="#" id="genre-graph"> 
+      Graph by genre </a>
+    </div> <!-- End column -->
+   </div> <!-- Close columns -->
+   <div class="columns chart">
+    <div id="chart" class="column">
+    </div>
+   </div> <!-- Close columns -->
+
+
 {% if query %}
     <!-- Begin faceting. -->
 
@@ -153,6 +167,21 @@ point{{ forloop.counter}} = L.geoJson({{ result.object.artist.location.point.geo
 
 })
 
+
+$("#genre-graph").on("click",function(){
+    $.ajax({
+	url:"/graph/genre/Landscape",
+        success: makeTimegraph,
+        dataType: 'json'   
+    })
+});
+
+
+
+function makeTimegraph(data){
+    $("#chart").css('height','300px').css('width','300px');
+    var chart = c3.generate(data);    
+};
 
 
 
