@@ -10,6 +10,19 @@ class TransactionEventIndex(indexes.SearchIndex, indexes.Indexable):
     work = indexes.CharField(model_attr="work")
     buyer = indexes.CharField(faceted=True)
     seller = indexes.CharField(faceted=True)
+    buyer_location = indexes.CharField(faceted=True)
+
+    def prepare_buyer_location(self, obj):
+        if obj.buyer:
+           if obj.buyer.location:
+               print obj.buyer.location.display_name
+               print str(obj.artist)
+               print str(obj.buyer)
+               return '%s' % (obj.buyer.location.display_name)
+           else:
+               return "Unrecorded"
+        else:
+            return "Unrecorded"
 
     def prepare_buyer(self, obj):
         if obj.buyer:

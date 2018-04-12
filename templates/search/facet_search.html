@@ -37,7 +37,6 @@
 
 {% if query %}
     <!-- Begin faceting. -->
-
     <div class="columns">
 
 
@@ -68,6 +67,19 @@
           </dl>
         </div>
         <div class="column">
+        <dl>
+            {% if facets.fields.buyer_location %}
+                <dt>Buyer location</dt>
+                {# Provide only the top 5 genres #}
+                {% for buyer_location in facets.fields.buyer_location|slice:":10" %}
+                    <dd style="padding-bottom:2px;"><a class="button is-primary is-rounded" href="{{ request.get_full_path }}&amp;selected_facets=buyer_location_exact:{{ buyer_location.0|urlencode }}">{{ buyer_location.0 }}</a> ({{ buyer_location.1 }})</dd>
+                {% endfor %}
+            {% else %}
+                <p>No buyer location facets.</p>
+            {% endif %}
+          </dl>
+        </div>
+        <div class="column">
         <dl>            {% if facets.fields.seller %}
                 <dt>Seller</dt>
                 {# Provide only the top 5 genres #}
@@ -92,6 +104,7 @@
             {% endif %}
           </dl>
         </div>
+
     </div>
 
 

@@ -17,7 +17,8 @@ from haystack.generic_views import FacetedSearchView as BaseFacetedSearchView
 # Now create your own that subclasses the base view
 class FacetedSearchView(BaseFacetedSearchView):
     form_class = FacetedSearchForm
-    facet_fields = ['genre', 'artist', 'buyer', 'seller']
+    facet_fields = ['genre', 'artist', 'buyer', 'seller',
+                    'buyer_location']
     template_name = 'search/facet_search.html'
     context_object_name = 'page_object'
     sort = ['stock_number']
